@@ -1,0 +1,41 @@
+#minimal binary files already in project that are checked n based on: 
+#$ find . -type f | perl -ne 'print $1 if m/\.([^.\/]+)$/' | sort -u
+#cache
+#config
+#credit
+#cs
+#csproj
+#dll
+#dtbcache
+#editorconfig
+#gitattributes
+#gitignore
+#ide
+#ide-shm
+#ide-wal
+#idx
+#jpg
+#json
+#lock
+#md
+#pack
+#pdb
+#png
+#props
+#sample
+#sln
+#suo
+#svg
+#targets
+#txt
+#uuid
+#xcf
+#xml
+#yml
+#zip
+
+*.dll filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.zip filter=lfs diff=lfs merge=lfs -text
+
+
