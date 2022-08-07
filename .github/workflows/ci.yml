@@ -1,0 +1,46 @@
+# CI for pull requests
+# https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle?learn=continuous_integration&learnProduct=actions
+
+name: CI
+
+on: [pull_request,workflow_dispatch]
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: [' 7.x' ]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'true'
+      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+
+      - name: list all files in current dir
+        run: |
+          find .    
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal
+
+      - name: list all files 
+        run: |
+          find .
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build${{ matrix.unity-version-matrix}}_${{github.run_id}}_${{github.run_number}}_${{github.run_attempt}}
+          retention-days: 30
+          path: |
+            1.3/Assemblies/*
+            1.2/Assemblies/*
